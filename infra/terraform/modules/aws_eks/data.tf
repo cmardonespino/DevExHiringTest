@@ -7,3 +7,7 @@ data "aws_subnet" "ng_selected_subnets" {
   for_each = toset(var.eks_nodegroup_subnet_ids)
   id       = each.value
 }
+
+data "aws_caller_identity" "current" {}
+
+data "aws_region" "current" {}
