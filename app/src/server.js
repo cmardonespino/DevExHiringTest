@@ -1,11 +1,17 @@
 const { createServer } = require('node:http');
-const hostname = '0.0.0.0';
-const port = 3000;
-const server = createServer((req, res) => {
+
+const handler = (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
   res.end('¡Hola Mundo!');
-});
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+};
+
+const server = createServer(handler);
+
+if (require.main === module) {
+  server.listen(3000, '0.0.0.0', () => {
+    console.log('Server running...');
+  });
+}
+
+module.exports = { server, handler }; 
