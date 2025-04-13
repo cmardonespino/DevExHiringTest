@@ -1,6 +1,17 @@
 name: GitHub Actions Demo
 run-name: ${{ github.actor }} is running application build 🚀
 on: [push]
+
+inputs:
+  aws-region:
+    description: "AWS Region"
+    required: true
+    default: "us-east-1"
+  aws-account-id:
+    description: "AWS account ID"
+    required: true
+    default: "590810503117"
+
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
@@ -12,9 +23,9 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCES_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ inputs.aws-region }}
           mask-aws-account-id: 'false'
       - name: Login to AWS ECR
         uses: aws-actions/amazon-ecr-login@v2
         with:
-          registries: "590810503117"
+          registries: ${{ inputs.aws-account-id }}
