@@ -118,3 +118,8 @@ variable "eks_nodegroup_labels" {
   description = ""
   default     = {}
 }
+
+variable "aws_profile" {
+  type        = string
+  description = ""
+}
