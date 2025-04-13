@@ -1,0 +1,14 @@
+{
+    "name": "mi-app-node",
+    "version": "1.0.0",
+    "description": "Una aplicación simple de Node.js que sirve un mensaje",
+    "main": "app/src/server.js",
+    "scripts": {
+      "start": "node app/src/server.js"
+    },
+    "keywords": [],
+    "author": "Carlos Mardones Pino",
+    "license": "MIT",
+    "dependencies": {}
+  }
+  
