@@ -4,11 +4,15 @@
     "description": "Una aplicación simple de Node.js que sirve un mensaje",
     "main": "app/src/server.js",
     "scripts": {
-      "start": "node app/src/server.js"
+    "start": "node app/src/server.js",
+    "test": "jest"
+    },
+    "devDependencies": {
+        "jest": "^29.0.0",
+        "node-mocks-http": "^1.11.0"
     },
     "keywords": [],
     "author": "Carlos Mardones Pino",
-    "license": "MIT",
-    "dependencies": {}
+    "license": "MIT"
   }
   

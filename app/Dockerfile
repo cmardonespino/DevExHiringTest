@@ -1,4 +1,4 @@
-FROM public.ecr.aws/blinkit/public.ecr.aws/docker/library/node:22.14.0
+FROM public.ecr.aws/blinkit/public.ecr.aws/docker/library/node:22.14.0 AS build
 
 COPY . /home/devexhiringtest
 WORKDIR /home/devexhiringtest
@@ -8,3 +8,7 @@ WORKDIR /home/devexhiringtest
 RUN npm install
 
 ENTRYPOINT ["npm", "start"]
+
+FROM build AS test
+
+RUN npm test

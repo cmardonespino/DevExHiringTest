@@ -1,4 +1,4 @@
-const { handler } = require('../server');
+const { handler } = require('../src/server');
 const httpMocks = require('node-mocks-http');
 
 test('handler returns ¡Hola Mundo!', () => {

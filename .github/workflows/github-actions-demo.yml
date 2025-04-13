@@ -31,25 +31,45 @@ jobs:
         run: echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
 
       # DOCKER_BUILDKIT=1 docker buildx build --progress=plain --tag test -f ./app/Dockerfile .
-      - name: Build and Push
+      - name: Build and push backend
         uses: docker/build-push-action@v5
         with:
-          #build-args: ${{ inputs.build-args }}
-          #secrets: ${{ inputs.secrets }}
-          #secret-files: ${{ inputs.secret-files }}
+          target: build
           push: true
           file: ./app/Dockerfile
-          tags: 590810503117.dkr.ecr.us-east-1.amazonaws.com/devexhiringtest-cmardonesp:${{ steps.vars.outputs.SHORT_SHA }}
+          tags: 590810503117.dkr.ecr.us-east-1.amazonaws.com/devexhiringtest-cmardonesp:build-${{ steps.vars.outputs.SHORT_SHA }}
           #cache-from: type=gha
-          #cache-to: type=gha,mode=max
           context: .
   test-app:
     runs-on: ubuntu-latest
-    needs: build-app
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          node-version: '22'
+          aws-access-key-id: ${{ secrets.AWS_ACCES_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+          mask-aws-account-id: 'false'
+      - name: Login to AWS ECR
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registries: ${{ env.AWS_ACCOUNT_ID }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract short SHA
+        id: vars
+        run: echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
+
+      # DOCKER_BUILDKIT=1 docker buildx build --progress=plain --tag test -f ./app/Dockerfile .
+      - name: Build and push tests
+        uses: docker/build-push-action@v5
+        with:
+          target: test
+          push: true
+          file: ./app/Dockerfile
+          tags: 590810503117.dkr.ecr.us-east-1.amazonaws.com/devexhiringtest-cmardonesp:test-${{ steps.vars.outputs.SHORT_SHA }}
+          #cache-from: type=gha
+          context: .
