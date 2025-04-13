@@ -35,13 +35,9 @@ runs:
       id: buildx
       uses: docker/setup-buildx-action@v3
 
-    - name: Cache Docker layers
-      uses: actions/cache@v4
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-
+    - name: Normalize branch name
+      id: vars
+      run: echo "TAG_NAME=${GITHUB_REF_NAME//\//-}" >> $GITHUB_ENV
 
     - name: Build and push tests
       uses: docker/build-push-action@v5
@@ -50,5 +46,5 @@ runs:
         push: ${{ inputs.push }}
         file: ./app/Dockerfile
         tags: ${{ inputs.ecr-repo }}:test-${{ inputs.sha }}
-        cache-from: ${{ inputs.ecr-repo }}:${{ inputs.cache-tag }}
+        cache-from: ${{ inputs.ecr-repo }}:${{ env.TAG_NAME }}
         context: .

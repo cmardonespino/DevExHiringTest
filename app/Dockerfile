@@ -7,8 +7,6 @@ RUN npm install
 
 COPY . /home/devexhiringtest
 
-ENTRYPOINT ["npm", "start"]
-
 FROM build AS test
 
 RUN npm run test

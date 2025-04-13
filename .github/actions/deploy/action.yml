@@ -1,0 +1,28 @@
+name: "Unit tests"
+description: "Unit tests for app"
+inputs:
+  eks-cluster-name:
+    description: "EKS cluster name where the app will be deployed"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install kubectl
+      uses: alexellis/arkade-get@23907b6f8cec5667c9a4ef724adea073d677e221
+      with:
+        kubectl: latest
+    - name: Configure kubectl
+      shell: bash
+      run: aws eks update-kubeconfig --name ${{ inputs.eks-cluster-name }}
+
+    # - name: Deploy Helm
+    #   uses: bitovi/github-actions-deploy-eks-helm@v1.2.7
+    #   with:
+    #     aws-region: ${{ env.AWS_REGION }}
+    #     cluster-name: ${{ env.CLUSTER_NAME }}
+    #     config-files: demo-app/values.yaml
+    #     chart-path: demo-app/
+    #     values: image.repository=${{ env.IMAGE_REPO }},image.tag=${{ env.IMAGE_TAG }}
+    #     namespace: default
+    #     name: demo-app
