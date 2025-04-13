@@ -46,6 +46,7 @@ jobs:
           context: .
   test-app:
     runs-on: ubuntu-latest
+    needs: build-app
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -80,6 +81,7 @@ jobs:
 
   lint-app:
     runs-on: ubuntu-latest
+    needs: build-app
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3

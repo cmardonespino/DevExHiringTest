@@ -1,11 +1,11 @@
 FROM public.ecr.aws/blinkit/public.ecr.aws/docker/library/node:22.14.0 AS build
 
-COPY . /home/devexhiringtest
 WORKDIR /home/devexhiringtest
-
-#COPY package*.json ./
+COPY package.json /home/devexhiringtest
 
 RUN npm install
+
+COPY . /home/devexhiringtest
 
 ENTRYPOINT ["npm", "start"]
 
