@@ -34,6 +34,7 @@ runs:
 
     - name: Normalize branch name
       id: vars
+      shell: bash
       run: echo "TAG_NAME=${GITHUB_REF_NAME//\//-}" >> $GITHUB_ENV
 
     - name: Lint

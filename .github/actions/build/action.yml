@@ -45,6 +45,7 @@ runs:
 
     - name: Normalize branch name
       id: vars
+      shell: bash
       run: echo "TAG_NAME=${GITHUB_REF_NAME//\//-}" >> $GITHUB_ENV
 
     # DOCKER_BUILDKIT=1 docker buildx build --progress=plain --tag test -f ./app/Dockerfile .
