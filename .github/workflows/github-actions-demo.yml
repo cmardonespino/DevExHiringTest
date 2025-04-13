@@ -43,6 +43,13 @@ jobs:
           #cache-from: type=gha
           #cache-to: type=gha,mode=max
           context: .
-          #target: ${{ inputs.target }}
-          #platforms: ${{ inputs.platforms }}
-          #load: ${{ inputs.load }}
+  test-app:
+    runs-on: ubuntu-latest
+    needs: build-app
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
