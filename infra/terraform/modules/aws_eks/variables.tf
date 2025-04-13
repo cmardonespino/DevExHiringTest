@@ -62,7 +62,7 @@ variable "instance_config_ebs_delete_on_termination" {
 variable "instance_config_type" {
   type        = string
   description = ""
-  default     = "t3a.large"
+  default     = "t3.micro"
 }
 
 variable "eks_nodegroup_ssm_connection" {
