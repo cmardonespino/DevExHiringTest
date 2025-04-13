@@ -33,7 +33,7 @@ jobs:
           #build-args: ${{ inputs.build-args }}
           #secrets: ${{ inputs.secrets }}
           #secret-files: ${{ inputs.secret-files }}
-          push: false
+          push: true
           file: ./app/Dockerfile
           tags: devexhiringtest-cmardonesp
           #cache-from: type=gha
