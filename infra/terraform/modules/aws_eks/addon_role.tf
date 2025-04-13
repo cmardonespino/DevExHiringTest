@@ -35,13 +35,13 @@ resource "aws_iam_role" "vpc_cni_addon" {
 
 resource "aws_iam_role_policy_attachment" "eks_cni" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-  role       = aws_iam_role.vpc_cni_addon[count.index].name
+  role       = aws_iam_role.vpc_cni_addon.name
 }
 
 resource "null_resource" "thumbprint" {
   provisioner "local-exec" {
     command = <<EOT
-      eksctl utils associate-iam-oidc-provider --cluster ${aws_eks_cluster.cluster[count.index].name} --approve --region ${data.aws_region.current.name} --profile ${var.aws_profile}
+      eksctl utils associate-iam-oidc-provider --cluster ${aws_eks_cluster.cluster.name} --approve --region ${data.aws_region.current.name} --profile ${var.aws_profile}
     EOT
   }
 }

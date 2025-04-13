@@ -32,6 +32,5 @@ resource "aws_eks_node_group" "nodegroup" {
     Name = var.eks_nodegroup_name
   }
 
-  #depends_on = [aws_launch_template.template, aws_eks_addon.kube_proxy, null_resource.aws_auth_configmap]
-  depends_on = [aws_launch_template.template]
+  depends_on = [aws_launch_template.template, aws_eks_addon.kube_proxy]
 }
