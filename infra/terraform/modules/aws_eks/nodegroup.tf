@@ -18,7 +18,7 @@ resource "aws_eks_node_group" "nodegroup" {
 
   launch_template {
     id      = aws_launch_template.template.id
-    version = var.launch_template_version == null ? aws_launch_template.template.latest_version : var.launch_template_version
+    version = aws_launch_template.template.latest_version
   }
 
   labels = merge(
