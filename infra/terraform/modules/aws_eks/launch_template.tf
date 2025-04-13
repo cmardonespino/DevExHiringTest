@@ -30,7 +30,7 @@ resource "aws_launch_template" "template" {
   user_data = base64encode(data.template_file.user_data.rendered)
 
   tags = {
-    Name           = "eks-${var.eks_cluster_name}-${var.eks_nodegroup_name}"
+    Name = "eks-${var.eks_cluster_name}-${var.eks_nodegroup_name}"
   }
 
   /*tag_specifications {

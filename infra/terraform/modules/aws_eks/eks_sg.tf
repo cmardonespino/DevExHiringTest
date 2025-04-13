@@ -32,7 +32,7 @@ resource "aws_security_group" "control_plane" {
   }
 
   tags = {
-    Name          = "eks-${var.eks_cluster_name}-control-plane"
+    Name = "eks-${var.eks_cluster_name}-control-plane"
   }
 }
 

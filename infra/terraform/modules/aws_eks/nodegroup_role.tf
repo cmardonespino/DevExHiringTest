@@ -18,7 +18,7 @@ resource "aws_iam_role" "nodegroup" {
   force_detach_policies = false
 
   tags = {
-    Name          = "eks-${var.eks_cluster_name}-${var.eks_nodegroup_name}-node-instance"
+    Name = "eks-${var.eks_cluster_name}-${var.eks_nodegroup_name}-node-instance"
   }
 }
 

@@ -1,6 +1,6 @@
 resource "aws_security_group" "nodegroup" {
-  name     = "eks-${var.eks_cluster_name}-${var.eks_nodegroup_name}"
-  vpc_id   = var.vpc_id
+  name   = "eks-${var.eks_cluster_name}-${var.eks_nodegroup_name}"
+  vpc_id = var.vpc_id
 
   ingress {
     from_port   = 30000
@@ -16,7 +16,7 @@ resource "aws_security_group" "nodegroup" {
   }
 
   tags = {
-    Name          = "eks-${var.eks_cluster_name}-${var.eks_nodegroup_name}"
+    Name = "eks-${var.eks_cluster_name}-${var.eks_nodegroup_name}"
   }
 
   depends_on = [aws_security_group.control_plane]
@@ -35,7 +35,7 @@ resource "aws_security_group" "shared_nodes" {
   }
 
   tags = {
-    Name          = "eks-${var.eks_cluster_name}-${var.eks_nodegroup_name}-shared-node"
+    Name = "eks-${var.eks_cluster_name}-${var.eks_nodegroup_name}-shared-node"
   }
 }
 
@@ -52,7 +52,7 @@ resource "aws_security_group" "eks" {
   }
 
   tags = {
-    Name          = "eks-${var.eks_cluster_name}"
+    Name = "eks-${var.eks_cluster_name}"
   }
 }
 
