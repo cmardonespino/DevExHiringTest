@@ -9,6 +9,7 @@ concurrency:
 env:
   AWS_REGION: "us-east-1"
   AWS_ACCOUNT_ID: "590810503117"
+  ECR_URI: "590810503117.dkr.ecr.us-east-1.amazonaws.com/devexhiringtest-cmardonesp"
 
 jobs:
   build-app:
@@ -34,6 +35,14 @@ jobs:
         id: vars
         run: echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
 
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
       # DOCKER_BUILDKIT=1 docker buildx build --progress=plain --tag test -f ./app/Dockerfile .
       - name: Build and push backend
         uses: docker/build-push-action@v5
@@ -41,8 +50,9 @@ jobs:
           target: build
           push: true
           file: ./app/Dockerfile
-          tags: 590810503117.dkr.ecr.us-east-1.amazonaws.com/devexhiringtest-cmardonesp:build-${{ steps.vars.outputs.SHORT_SHA }}
-          #cache-from: type=gha
+          tags: ${{ env.ECR_URI }}:build-${{ steps.vars.outputs.SHORT_SHA }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
           context: .
   test-app:
     runs-on: ubuntu-latest
@@ -75,8 +85,8 @@ jobs:
           target: test
           push: true
           file: ./app/Dockerfile
-          tags: 590810503117.dkr.ecr.us-east-1.amazonaws.com/devexhiringtest-cmardonesp:test-${{ steps.vars.outputs.SHORT_SHA }}
-          #cache-from: type=gha
+          tags: ${{ env.ECR_URI }}:test-${{ steps.vars.outputs.SHORT_SHA }}
+          cache-from: ${{ env.ECR_URI }}:build-${{ steps.vars.outputs.SHORT_SHA }}
           context: .
 
   lint-app:
@@ -110,6 +120,5 @@ jobs:
           target: lint
           push: false
           file: ./app/Dockerfile
-          tags: 590810503117.dkr.ecr.us-east-1.amazonaws.com/devexhiringtest-cmardonesp:test-${{ steps.vars.outputs.SHORT_SHA }}
-          #cache-from: type=gha
+          cache-from: ${{ env.ECR_URI }}:build-${{ steps.vars.outputs.SHORT_SHA }}
           context: .
