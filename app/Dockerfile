@@ -11,4 +11,8 @@ ENTRYPOINT ["npm", "start"]
 
 FROM build AS test
 
-RUN npm test
+RUN npm run test
+
+FROM build AS lint
+
+RUN npm run lint
