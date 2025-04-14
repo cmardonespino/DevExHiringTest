@@ -20,7 +20,12 @@ runs:
       run: aws eks update-kubeconfig --name ${{ inputs.eks-cluster-name }}
     - name: Create namespace
       shell: bash
-      run: kubectl create namespace ${{ inputs.eks-namespace }}
+      run: kubectl create namespace ${{ inputs.eks-namespace }} || echo "El namespace ya existe"
+    - name: Deploy app
+      shell: bash
+      run: |
+        kubectl apply -f .infra/kubernetes/deployment/deployment.yml
+        kubectl apply -f .infra/kubernetes/service/service.yml
 
     # - name: Deploy Helm
     #   uses: bitovi/github-actions-deploy-eks-helm@v1.2.7
