@@ -33,27 +33,21 @@ resource "aws_launch_template" "template" {
     Name = "eks-${var.eks_cluster_name}-${var.eks_nodegroup_name}"
   }
 
-  /*tag_specifications {
+  tag_specifications {
     resource_type = "instance"
-    tags = merge(
-      var.tag_specifications,
-      {
-        "Name"           = "${var.eks_nodegroup_name}-node",
-        "ClusterName"    = var.eks_cluster_name
-      }
-    )
-  }*/
+    tags = {
+      "Name"        = "${var.eks_nodegroup_name}-node",
+      "ClusterName" = var.eks_cluster_name
+    }
+  }
 
-  /*tag_specifications {
+  tag_specifications {
     resource_type = "volume"
-    tags = merge(
-      each.value.tag_specifications,
-      {
-        "Name"           = "${var.eks_nodegroup_name}-volumeNode",
-        "ClusterName"    = var.eks_cluster_name
-      }
-    )
-  }*/
+    tags = {
+      "Name"        = "${var.eks_nodegroup_name}-volumeNode",
+      "ClusterName" = var.eks_cluster_name
+    }
+  }
 }
 
 data "template_file" "user_data" {
