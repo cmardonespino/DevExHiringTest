@@ -4,6 +4,9 @@ inputs:
   eks-cluster-name:
     description: "EKS cluster name where the app will be deployed"
     required: true
+  eks-namespace:
+    description: "EKS Namespace where the app will be deployed"
+    required: true
 
 runs:
   using: "composite"
@@ -11,10 +14,13 @@ runs:
     - name: Install kubectl
       uses: alexellis/arkade-get@23907b6f8cec5667c9a4ef724adea073d677e221
       with:
-        kubectl: latest
+        kubectl: v1.22.0
     - name: Configure kubectl
       shell: bash
       run: aws eks update-kubeconfig --name ${{ inputs.eks-cluster-name }}
+    - name: Create namespace
+      shell: bash
+      run: kubectl create namespace ${{ inputs.eks-namespace }}
 
     # - name: Deploy Helm
     #   uses: bitovi/github-actions-deploy-eks-helm@v1.2.7
