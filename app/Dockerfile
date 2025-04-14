@@ -7,6 +7,8 @@ RUN npm install
 
 COPY . /home/devexhiringtest
 
+EXPOSE 3000
+
 FROM build AS test
 
 RUN npm run test
