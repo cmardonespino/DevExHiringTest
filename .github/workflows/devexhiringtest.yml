@@ -75,3 +75,4 @@ jobs:
         with:
           eks-cluster-name: devexhiringtest-cmardonesp
           eks-namespace: devexhiringtest
+          ecr-repo: ${{ env.ECR_URI }}
