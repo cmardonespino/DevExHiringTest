@@ -42,3 +42,5 @@ runs:
 
         kubectl apply -f ./infra/kubernetes/deployment/deployment.yml
         kubectl apply -f ./infra/kubernetes/service/service.yml
+
+        kubectl rollout status deployment/node-app -n devexhiringtest
