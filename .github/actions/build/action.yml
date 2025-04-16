@@ -56,7 +56,6 @@ runs:
         push: ${{ inputs.push }}
         file: ./app/Dockerfile
         tags: |
-          ${{ inputs.ecr-repo }}:${{ inputs.image-tag }}
-          ${{ inputs.ecr-repo }}:${{ env.TAG_NAME }}
+          ${{ inputs.ecr-repo }}:${{ inputs.image-tag }},${{ inputs.ecr-repo }}:${{ env.TAG_NAME }}
         cache-from: ${{ inputs.ecr-repo }}:${{ env.TAG_NAME }}
         context: .
