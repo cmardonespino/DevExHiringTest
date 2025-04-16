@@ -1,6 +1,12 @@
 provider "aws" {
   region  = "us-east-1"
   profile = "devops"
+
+  default_tags {
+    tags = {
+      Terraform = true
+    }
+  }
 }
 
 terraform {
