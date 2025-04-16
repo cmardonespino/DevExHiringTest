@@ -28,3 +28,5 @@ data "aws_subnet" "public" {
   for_each = { for id in data.aws_subnets.public.ids : id => id }
   id       = each.key
 }
+
+data "aws_caller_identity" "current" {}
