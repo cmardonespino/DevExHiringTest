@@ -69,6 +69,7 @@ jobs:
   deploy:
     runs-on: bastion
     needs: [lint, unit-test]
+    #environment: devexhiringtest
     permissions:
       id-token: write
       contents: read
