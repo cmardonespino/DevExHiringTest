@@ -2,8 +2,6 @@ resource "aws_launch_template" "template" {
 
   name = "eks-${var.eks_cluster_name}-${var.eks_nodegroup_name}"
 
-  key_name = var.eks_nodegroup_ssm_connection ? aws_key_pair.kp.key_name : null
-
   block_device_mappings {
     device_name = "/dev/xvda"
 
