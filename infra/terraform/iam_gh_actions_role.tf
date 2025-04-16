@@ -14,7 +14,8 @@ resource "aws_iam_policy" "ecr_access_policy" {
           "ecr:PutImage",
           "ecr:InitiateLayerUpload",
           "ecr:UploadLayerPart",
-          "ecr:CompleteLayerUpload"
+          "ecr:CompleteLayerUpload",
+          "eks:DescribeCluster"
         ]
         Resource = "*"
       }
