@@ -30,3 +30,11 @@ data "aws_subnet" "public" {
 }
 
 data "aws_caller_identity" "current" {}
+
+data "aws_eks_cluster" "cluster" {
+  name = "devexhiringtest-cmardonesp"
+}
+
+data "aws_iam_role" "gh_actions" {
+  name = "GitHubActionsAWSAccessCfnTestSandbox"
+}
