@@ -1,0 +1,86 @@
+name: GitHub Actions - Carlos Mardones Pino
+run-name: ${{ github.actor }} is running application build 🚀
+on: [push]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+
+env:
+  AWS_REGION: "us-east-1"
+  AWS_ACCOUNT_ID: "590810503117"
+  ECR_URI: "590810503117.dkr.ecr.us-east-1.amazonaws.com/devexhiringtest-cmardonesp"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - uses: ./.github/actions/ecr-login
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+      - uses: ./.github/actions/build
+        with:
+          ecr-repo: ${{ env.ECR_URI }}
+          aws-account-id: ${{ env.AWS_ACCOUNT_ID }}
+          aws-region: ${{ env.AWS_REGION }}
+
+  unit-test:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - uses: ./.github/actions/ecr-login
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+      - uses: ./.github/actions/unit-test
+        with:
+          ecr-repo: ${{ env.ECR_URI }}
+          aws-region: ${{ env.AWS_REGION }}
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - uses: ./.github/actions/ecr-login
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+      - uses: ./.github/actions/lint
+        with:
+          ecr-repo: ${{ env.ECR_URI }}
+          aws-region: ${{ env.AWS_REGION }}
+
+  deploy:
+    runs-on: bastion
+    needs: [lint, unit-test]
+    #environment: devexhiringtest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - uses: ./.github/actions/ecr-login
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+      - uses: ./.github/actions/deploy
+        with:
+          eks-cluster-name: devexhiringtest-cmardonesp
+          eks-namespace: devexhiringtest
+          ecr-repo: ${{ env.ECR_URI }}

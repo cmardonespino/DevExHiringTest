@@ -1,0 +1,28 @@
+name: "ECR login"
+description: "Login into ECR for pull and push images"
+inputs:
+  aws-region:
+    description: "AWS Region where the ECR is located"
+    required: true
+    default: us-east-1
+  aws-account-id:
+    description: "AWS account ID where the infraestructure is created"
+    default: 590810503117
+  gh-actions-iam-role-name:
+    description: ""
+    default: "GitHubActionsAWSAccessCfnTestSandbox"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+          role-to-assume: arn:aws:iam::${{ inputs.aws-account-id }}:role/${{ inputs.gh-actions-iam-role-name }}
+          aws-region: us-east-1
+
+    - name: Login to AWS ECR
+      uses: aws-actions/amazon-ecr-login@v2
+      with:
+        registries: ${{ inputs.aws-account-id }}
+

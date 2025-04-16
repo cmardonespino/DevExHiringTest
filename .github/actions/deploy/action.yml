@@ -1,0 +1,46 @@
+name: "Deploy to EKS"
+description: "Deployment steps for app"
+inputs:
+  eks-cluster-name:
+    description: "EKS cluster name where the app will be deployed"
+    required: true
+  eks-namespace:
+    description: "EKS Namespace where the app will be deployed"
+    required: true
+  image-tag:
+    description: "Cache tag for reduce build time"
+    default: build-${{ github.sha }}
+  ecr-repo:
+    description: "ECR repo where the container will be pushed"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install kubectl
+      uses: alexellis/arkade-get@23907b6f8cec5667c9a4ef724adea073d677e221
+      with:
+        kubectl: v1.22.0
+        helm: v3.9.4
+        eksctl: v0.143.0
+    - name: Configure kubectl
+      shell: bash
+      run: aws eks update-kubeconfig --name ${{ inputs.eks-cluster-name }}
+    - name: Create namespace
+      shell: bash
+      run: kubectl create namespace ${{ inputs.eks-namespace }} || echo "El namespace ya existe"
+    - name: Deploy app
+      shell: bash
+      run: |
+        sed -i "s|_namespace_|${{ inputs.eks-namespace }}|g" ./infra/kubernetes/deployment/deployment.yml
+        sed -i "s|_namespace_|${{ inputs.eks-namespace }}|g" ./infra/kubernetes/service/service.yml
+        
+        sed -i "s|_app_image_|${{ inputs.ecr-repo }}:${{ inputs.image-tag }}|g" ./infra/kubernetes/deployment/deployment.yml
+
+        cat ./infra/kubernetes/deployment/deployment.yml
+        cat ./infra/kubernetes/service/service.yml
+
+        kubectl apply -f ./infra/kubernetes/deployment/deployment.yml
+        kubectl apply -f ./infra/kubernetes/service/service.yml
+
+        kubectl rollout status deployment/node-app -n devexhiringtest

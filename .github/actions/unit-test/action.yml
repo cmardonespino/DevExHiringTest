@@ -1,0 +1,51 @@
+name: "Unit tests"
+description: "Ejecucion de pruebas unitarias"
+inputs:
+  aws-region:
+    description: "AWS Region where the ECR is located"
+    required: true
+  context:
+    description: "Build context where the container will be built"
+    required: false
+    default: "."
+  target:
+    description: "The target stage to build"
+    required: false
+  cache-tag:
+    description: "Cache tag for reduce build time"
+    default: build-${{ github.sha }}
+  sha:
+    description: "Commit SHA"
+    default: ${{ github.sha }}
+  dockerfile:
+    description: "Dockerfile used to build container"
+    required: true
+    default: "Dockerfile"
+  ecr-repo:
+    description: "ECR repo where the container will be pushed"
+    required: true
+  push:
+    description: "Push container after build"
+    default: "true"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Normalize branch name
+      id: vars
+      shell: bash
+      run: echo "TAG_NAME=${GITHUB_REF_NAME//\//-}" >> $GITHUB_ENV
+
+    - name: Build and push tests
+      uses: docker/build-push-action@v5
+      with:
+        target: test
+        push: ${{ inputs.push }}
+        file: ./app/Dockerfile
+        tags: ${{ inputs.ecr-repo }}:test-${{ inputs.sha }}
+        cache-from: ${{ inputs.ecr-repo }}:${{ env.TAG_NAME }}
+        context: .
