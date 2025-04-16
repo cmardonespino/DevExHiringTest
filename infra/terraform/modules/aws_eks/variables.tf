@@ -111,3 +111,21 @@ variable "aws_profile" {
   type        = string
   description = "Profile name used for execute eksctl resources"
 }
+
+variable "addon_kube_proxy_version" {
+  type = string
+  description = "Kube proxy addon version"
+  default = "v1.31.3-eksbuild.2"
+}
+
+variable "addon_code_dns_version" {
+  type = string
+  description = "Core DNS addon version"
+  default = "v1.11.4-eksbuild.2"
+}
+
+variable "addon_cni_version" {
+  type = string
+  description = "Core DNS addon version"
+  default = "v1.19.3-eksbuild.1"
+}

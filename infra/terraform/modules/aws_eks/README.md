@@ -80,6 +80,9 @@ module "eks_devexhiringtest_cluster" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_addon_cni_version"></a> [addon\_cni\_version](#input\_addon\_cni\_version) | Core DNS addon version | `string` | `"v1.19.3-eksbuild.1"` | no |
+| <a name="input_addon_code_dns_version"></a> [addon\_code\_dns\_version](#input\_addon\_code\_dns\_version) | Core DNS addon version | `string` | `"v1.11.4-eksbuild.2"` | no |
+| <a name="input_addon_kube_proxy_version"></a> [addon\_kube\_proxy\_version](#input\_addon\_kube\_proxy\_version) | Kube proxy addon version | `string` | `"v1.31.3-eksbuild.2"` | no |
 | <a name="input_ami_type"></a> [ami\_type](#input\_ami\_type) | Specifies the AMI (Amazon Machine Image) type for launching EC2 instances or nodes in a group. It defines the operating system and configuration of the instance | `string` | `"AL2_x86_64"` | no |
 | <a name="input_aws_profile"></a> [aws\_profile](#input\_aws\_profile) | Profile name used for execute eksctl resources | `string` | n/a | yes |
 | <a name="input_capacity_type"></a> [capacity\_type](#input\_capacity\_type) | Specifies the capacity type for the instance or node group. This determines how the instance or node is managed in terms of scaling and billing | `string` | `"ON_DEMAND"` | no |
