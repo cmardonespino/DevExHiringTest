@@ -53,6 +53,7 @@ resource "aws_security_group" "eks" {
 
   tags = {
     Name = "eks-${var.eks_cluster_name}"
+    "kubernetes.io/cluster/devexhiringtest-cmardonesp" = "owned" #este tag se agrega para que el controller pueda crear el balanceador y exponer la app por external-ip
   }
 }
 
