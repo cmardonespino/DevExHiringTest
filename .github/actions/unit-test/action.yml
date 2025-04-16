@@ -1,5 +1,5 @@
 name: "Unit tests"
-description: "Unit tests for app"
+description: "Ejecucion de pruebas unitarias"
 inputs:
   aws-region:
     description: "AWS Region where the ECR is located"

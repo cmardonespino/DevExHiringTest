@@ -1,5 +1,5 @@
-name: "Unit tests"
-description: "Unit tests for app"
+name: "Deploy to EKS"
+description: "Deployment steps for app"
 inputs:
   eks-cluster-name:
     description: "EKS cluster name where the app will be deployed"

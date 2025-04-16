@@ -1,5 +1,5 @@
-name: "Unit tests"
-description: "Unit tests for app"
+name: "Code linting"
+description: "Ejecuta un linter para verificar y corregir problemas de estilo y errores en el código, asegurando calidad y consistencia en el proyecto"
 inputs:
   aws-region:
     description: "AWS Region where the ECR is located"
