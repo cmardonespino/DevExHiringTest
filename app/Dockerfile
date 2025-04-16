@@ -9,6 +9,8 @@ COPY . /home/devexhiringtest
 
 EXPOSE 3000
 
+RUN ls -las
+
 FROM build AS test
 
 RUN npm run test
